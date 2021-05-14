@@ -1,0 +1,4 @@
+D:\Programming\VS\Numerical method\Lab\Numerical_integration\numerical_integration\numerical_integration\Debug\numerical_integration.vcxprojAssemblyReference.cache
+D:\Programming\VS\Numerical method\Lab\Numerical_integration\numerical_integration\numerical_integration\Debug\numericalintegration.MyForm.resources
+D:\Programming\VS\Numerical method\Lab\Numerical_integration\numerical_integration\numerical_integration\Debug\numerical_integration.vcxproj.GenerateResource.cache
+D:\Programming\VS\Numerical method\Lab\Numerical_integration\numerical_integration\numerical_integration\Debug\numerical_integration.vcxproj.CopyComplete
