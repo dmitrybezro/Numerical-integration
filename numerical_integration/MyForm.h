@@ -353,6 +353,50 @@ private:
 				(sin(100 * a) / 100) + (cos(a) / 2) - (cos(3 * a) / 6));
 		}
 	}
+	double Method_Integration(double a, double b, int N, String^ method) {
+		//  Шаг
+		double h = (b - a) / N;
+
+		double curr_x = a;
+		double I = 0;
+		if (method == "прямоугольников") {
+			for (int i = 0; i < N; i++) {
+				I += func((curr_x + (curr_x + h)) / 2) * h;
+				curr_x += h;
+			}
+		}
+
+		if (method == "трапеций") {
+			for (int i = 0; i < N; i++) {
+				I += (func(curr_x) + func(curr_x + h)) * h / 2;
+				curr_x += h;
+			}
+		}
+
+		if (method == "Симпсона") {
+			for (int i = 0; i < N; i++) {
+				I += (func(curr_x) + 4 * func(curr_x + h / 2) + func(curr_x + h)) * h / 6;
+				curr_x += h;
+			}
+		}
+
+		return I;
+	}
+
+	double adaptive_quadrature(double a, double b, int N, double eps, String^ method) {
+		double I = Method_Integration(a, b, N, method);
+
+		double I1 = Method_Integration(a, (a+b)/2, N, method);
+		double I2 = Method_Integration((a + b) / 2, b, N, method);
+
+		if (abs(I1 + I2 - I) < eps)
+			return I;
+		else {
+			double Integral = adaptive_quadrature(a, (a + b) / 2, N, eps / 2, method) +
+				adaptive_quadrature((a + b) / 2, b, N, eps / 2, method);
+			return Integral;
+		}
+	}
 private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 
 	//  Границы интегрирования
@@ -362,9 +406,6 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 	//  Число разбиений
 	int N = Convert::ToInt32(textBox3->Text);
 
-	//  Шаг
-	double h = (b - a) / N;
-
 	//  Подынтегральная функция
 	String^ work_function = Convert::ToString(comboBox1->Text);
 
@@ -373,9 +414,6 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 
 	//  Значение интеграла
 	double I = 0;
-
-	//  Текущее значение x
-	double curr_x = a;
 
 	//  Выбор функции
 	if (work_function == "sin(x)cos(2x)") {
@@ -389,6 +427,12 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 	if (work_function == "sin(x)cos(2x) + cos(100x)") {
 		number_function = 3;
 	}
+
+	double eps = 0.01;
+
+	I = Method_Integration(a, b, N, method);
+	//I = adaptive_quadrature(a, b, N, eps, method);
+
 	//  Построение графика интегрируемой функции
 	double x_min = a;
 	double x_max = a;
@@ -408,26 +452,7 @@ private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e
 		}
 	}
 
-	if (method == "прямоугольников") {
-		for (int i = 0; i < N; i++) {
-			I += func((curr_x + (curr_x + h)) / 2) * h;
-			curr_x += h;
-		}
-	}
-	
-	if (method == "трапеций") {
-		for (int i = 0; i < N; i++) {
-			I += (func(curr_x) + func(curr_x + h)) * h / 2;
-			curr_x += h;
-		}
-	}
 
-	if (method == "Симпсона") {
-		for (int i = 0; i < N; i++) {
-			I += (func(curr_x) + 4 * func(curr_x + h / 2) + func(curr_x + h)) * h / 6;
-			curr_x += h;
-		}
-	}
 
 	if (method != "") {
 
