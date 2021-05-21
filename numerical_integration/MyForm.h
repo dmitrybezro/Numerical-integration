@@ -535,7 +535,7 @@ private:
 
 		if (number_function == 3) {
 			return ((sin(100 * b) / 100) + (cos(b) / 2) - (cos(3 * b) / 6) - 
-				(sin(100 * a) / 100) + (cos(a) / 2) - (cos(3 * a) / 6));
+				((sin(100 * a) / 100) + (cos(a) / 2) - (cos(3 * a) / 6)));
 		}
 	}
 	double Method_Integration(double a, double b, int N, String^ method) {
@@ -685,18 +685,18 @@ private:
 			B[i] = double(rand()) / RAND_MAX * (2) - 1;
 		}
 	}
-	double Adaptive_Quadrature(double a, double b, int N, double eps, double _x, String^ method) {
+	double Adaptive_Quadrature(double a, double b, double eps, double _x, String^ method) {
 		count++;
-		double I = method_integration(a, b, N, _x, method);
+		double I = method_integration(a, b, _x, method);
 
-		double I1 = method_integration(a, (a + b) / 2, N, _x, method);
-		double I2 = method_integration((a + b) / 2, b, N, _x, method);
+		double I1 = method_integration(a, (a + b) / 2, _x, method);
+		double I2 = method_integration((a + b) / 2, b, _x, method);
 
 		if (abs(I1 + I2 - I) < eps)
 			return I;
 		else {
-			double Integral = Adaptive_Quadrature(a, (a + b) / 2, N, eps / 2, _x, method) +
-				Adaptive_Quadrature((a + b) / 2, b, N, eps / 2, _x, method);
+			double Integral = Adaptive_Quadrature(a, (a + b) / 2, eps / 2, _x, method) +
+				Adaptive_Quadrature((a + b) / 2, b, eps / 2, _x, method);
 			return Integral;
 		}
 	}
@@ -708,33 +708,24 @@ private:
 		}
 		return res;
 	}
-
-	double method_integration(double a, double b, double N, double x, String^ method) {
+	//  Не составная формула
+	double method_integration(double a, double b, double x, String^ method) {
 		//  Шаг
-		double h = (b - a) / N;
+		//double h = (b - a) / 2;
 
-		double curr_x = a;
-		double I = 0;
+		//double curr_x = a;
+		double I;
 		if (method == "прямоугольников") {
-			for (int i = 0; i < N; i++) {
-				I += func_G((curr_x + (curr_x + h)) / 2, x) * h;
-				curr_x += h;
-			}
+			I = func_G((a + b) / 2, x) * (b - a);
 		}
 
 		if (method == "трапеций") {
-			for (int i = 0; i < N; i++) {
-				I += (func_G(curr_x, x) + func_G(curr_x + h, x)) * h / 2;
-				curr_x += h;
-			}
+			I = (func_G(a, x) + func_G(b, x)) * (b - a) / 2;
 		}
 
 		if (method == "Симпсона") {
-			for (int i = 0; i < N; i++) {
-				I += (func_G(curr_x, x) + 4 * func_G(curr_x + h / 2, x) + 
-					func_G(curr_x + h, x)) * h / 6;
-				curr_x += h;
-			}
+			I = (func_G(a, x) + 4 * func_G((a + b) / 2, x) +
+				func_G(b, x)) * (b - a) / 6;
 		}
 
 		return I;
@@ -765,10 +756,11 @@ private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e
 	panel2->CurveList->Clear();
 	PointPairList^ f2_list = gcnew ZedGraph::PointPairList();
 	if (method != "") {
+		double p = 1.0 / (N);
 		//  Интегрировать снова для каждого значения Х
-		for (double x = 0; x <= 1; x = x + 0.1) {
+		for (double x = 0; x <= 1; x = x + p) {
 			count = 0;
-			double value = Adaptive_Quadrature(-M_PI / 2, M_PI / 2, N, eps, x, method);
+			double value = Adaptive_Quadrature(-M_PI / 2, M_PI / 2, eps, x, method);
 			f1_list->Add(x, value);
 			if (value > max) {
 				max = value;

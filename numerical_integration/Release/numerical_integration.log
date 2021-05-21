@@ -1,0 +1,9 @@
+﻿  MyForm.cpp
+D:\Programming\VS\Numerical method\Lab\Numerical_integration\numerical_integration\numerical_integration\MyForm.h(680,21): warning C4018: <: несоответствие типов со знаком и без знака
+D:\Programming\VS\Numerical method\Lab\Numerical_integration\numerical_integration\numerical_integration\MyForm.h(684,21): warning C4018: <: несоответствие типов со знаком и без знака
+  .NETFramework,Version=v4.7.2.AssemblyAttributes.cpp
+  Создание кода...
+D:\Programming\VS\Numerical method\Lab\Numerical_integration\numerical_integration\numerical_integration\MyForm.h(525): warning C4715: numericalintegration::MyForm::func: значение возвращается не при всех путях выполнения
+D:\Programming\VS\Numerical method\Lab\Numerical_integration\numerical_integration\numerical_integration\MyForm.h(540): warning C4715: numericalintegration::MyForm::true_value: значение возвращается не при всех путях выполнения
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(997,5): error : Элемент <SubSystem> имеет недопустимое значение "/Windows (SUBSYSTEM:WINDOWS)".
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppCommon.targets(997,5): error MSB6011: в задачу Microsoft.Build.CPPTasks.Link переданы недопустимые параметры.
